@@ -2,7 +2,7 @@ public class Main {
     public static void main(String[] args) {
         Author author1 = new Author("Федор Достоевский");
         Book book1 = new Book("Преступление и наказание", author1, 1866);
-        Author author2 = new Author("Александр Грибоедов");
+        Author author2 = new Author("Александр", "Грибоедов");
         Book book2 = new Book("Горе от ума", author2, 1825);
         book2.printBook();
         book2.setYearOfPublication(1826);
@@ -60,11 +60,13 @@ class Author {
     Author(String fullName) {
         fullName = fullName.trim();
         String[] name = fullName.split(" ");
-        if (name.length != 2) {
-            throw new RuntimeException("Некорректно указано имя автора");
-        }
         firstName = name[0];
         lastName = name[1];
+    }
+
+    Author(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public void setFirstName(String firstName) {
