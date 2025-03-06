@@ -25,9 +25,14 @@ public class Book {
         this.yearOfPublication = yearOfPublication;
     }
 
-    public void printBook() {
-        System.out.println("Название книги: " + title);
-        System.out.println("Автор книги: " + author.getFirstName() + " " + author.getLastName());
-        System.out.println("Год публикации: " + yearOfPublication);
+    public String toString() {
+        return "Название книги: " + title + "\nАвтор книги: " + author.toString() +
+                "\nГод публикации: " + yearOfPublication;
+    }
+
+    public int hashCode() {
+        int result = title == null ? 0 : title.hashCode();
+        result = result * 31 + (author.toString() == null ? 0 : author.toString().hashCode());
+        return result * 31 + yearOfPublication;
     }
 }
