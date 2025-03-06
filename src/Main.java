@@ -4,9 +4,9 @@ public class Main {
         Book book1 = new Book("Преступление и наказание", author1, 1866);
         Author author2 = new Author("Александр", "Грибоедов");
         Book book2 = new Book("Горе от ума", author2, 1825);
-        book2.printBook();
+        System.out.println(book2);
         book2.setYearOfPublication(1826);
         System.out.println();
-        book2.printBook();
+        System.out.println(book2);
     }
 }
