@@ -1,10 +1,13 @@
 package org.skypro.skyshop;
 
+import org.skypro.skyshop.article.Article;
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.producttypes.DiscountedProduct;
 import org.skypro.skyshop.product.producttypes.FixPriceProduct;
 import org.skypro.skyshop.product.producttypes.SimpleProduct;
+import org.skypro.skyshop.searchengine.SearchEngine;
+
 
 public class App {
     public static void main(String[] args) {
@@ -41,5 +44,34 @@ public class App {
         System.out.println("Стоимость корзины: " + productBasket.basketCost());
         System.out.println("\nПоиск товара в пустой корзине по имени");
         System.out.println(productBasket.productExists("Молоко"));
+
+        //Полиморфизм
+        System.out.println("\nПолиморфизм и интерфейсы");
+        SearchEngine searchEngine = new SearchEngine(10);
+        searchEngine.add(bread);
+        searchEngine.add(milk);
+        searchEngine.add(eggs);
+        searchEngine.add(cheese);
+        searchEngine.add(sausage);
+        Article article1 = new Article("Хлебная мудрость", "Лучше Хлеб с водою, чем пирог с бедою");
+        Article article2 = new Article("Сырная мудрость", "Бесплатный Сыр бывает только в мышеловке. И только дл второй мыши");
+        searchEngine.add(article1);
+        searchEngine.add(article2);
+        System.out.println("\nРезультаты поиска Хлеб:");
+        printSearchResult(searchEngine.search("Хлеб"));
+        System.out.println("\nРезультаты поиска Сыр:");
+        printSearchResult(searchEngine.search("Сыр"));
+        System.out.println("\nРезультаты поиска л:");
+        printSearchResult(searchEngine.search("л"));
+    }
+
+    private static void printSearchResult(Searchable[] searchResult) {
+        for (Searchable x : searchResult) {
+            if (x != null) {
+                System.out.println(x.getStringRepresentation());
+            } else {
+                System.out.println("null");
+            }
+        }
     }
 }
