@@ -12,6 +12,16 @@ import org.skypro.skyshop.searchengine.SearchEngine;
 public class App {
     public static void main(String[] args) {
         //Создаем продукты
+        try {
+            Product incorrectProduct1 = new SimpleProduct(null, 180);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Некорректно заданы параметры продукта");
+        }
+        try {
+            Product incorrectProduct2 = new DiscountedProduct("product", 180, 200);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Некорректно заданы параметры продукта");
+        }
         Product bread = new SimpleProduct("Хлеб", 50);
         Product milk = new FixPriceProduct("Молоко");
         Product eggs = new DiscountedProduct("Яйца", 120, 20);
@@ -63,6 +73,16 @@ public class App {
         printSearchResult(searchEngine.search("Сыр"));
         System.out.println("\nРезультаты поиска л:");
         printSearchResult(searchEngine.search("л"));
+        //Новый метод поиска
+        System.out.println("\nНовый метод поиска");
+        try {
+            System.out.println("Попытка поиска существующего элемента...");
+            System.out.println(searchEngine.getTheBestSearchResult("ро").getStringRepresentation());
+            System.out.println("Попытка поиска несуществующего элемента...");
+            System.out.println(searchEngine.getTheBestSearchResult("jnbsvad").getStringRepresentation());
+        } catch (BestResultNotFound e) {
+            System.out.println("Не найдено подходящей статьи");
+        }
     }
 
     private static void printSearchResult(Searchable[] searchResult) {
