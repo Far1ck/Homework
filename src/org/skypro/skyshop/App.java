@@ -8,6 +8,8 @@ import org.skypro.skyshop.product.producttypes.FixPriceProduct;
 import org.skypro.skyshop.product.producttypes.SimpleProduct;
 import org.skypro.skyshop.searchengine.SearchEngine;
 
+import java.util.List;
+
 
 public class App {
     public static void main(String[] args) {
@@ -27,7 +29,6 @@ public class App {
         Product eggs = new DiscountedProduct("Яйца", 120, 20);
         Product cheese = new DiscountedProduct("Сыр", 152, 30);
         Product sausage = new SimpleProduct("Колбаса", 280);
-        Product cottageCheese = new SimpleProduct("Творог", 112);
         //Создаем корзину
         ProductBasket productBasket = new ProductBasket();
         //Добавляем продукты в корзину
@@ -36,8 +37,6 @@ public class App {
         productBasket.addProduct(eggs);
         productBasket.addProduct(cheese);
         productBasket.addProduct(sausage);
-        System.out.println("Попытка добавить продукты в заполненную корзину");
-        productBasket.addProduct(cottageCheese);
         System.out.println("\nПечать содержимого корзины с несколькими товарами");
         productBasket.contentsOfTheBasket();
         System.out.println("\nПолучение стоимости корзины с несколькими товарами");
@@ -46,6 +45,19 @@ public class App {
         System.out.println(productBasket.productExists("Хлеб"));
         System.out.println("\nПоиск товара, которого нет в корзине");
         System.out.println(productBasket.productExists("Творог"));
+        //Удаляем существующий продукт из корзины
+        System.out.println("\nУдаляем существующий продукт из корзины");
+        List<Product> removingResult = productBasket.removeByName("Хлеб");
+        System.out.println("Удаленные продукты:\n" + removingResult);
+        System.out.println("\nСодержимое корзины после удаления продукта");
+        productBasket.contentsOfTheBasket();
+        System.out.println("\nПопытка удалить несуществующий продукт");
+        removingResult = productBasket.removeByName("Творог");
+        if (removingResult.isEmpty()) {
+            System.out.println("Список пуст");
+        }
+        System.out.println("\nСодержимое корзины после удаления несуществующего продукта");
+        productBasket.contentsOfTheBasket();
         System.out.println("\nОчистка корзины");
         productBasket.emptyBasket();
         System.out.println("\nПечать содержимого пустой корзины");
@@ -57,22 +69,22 @@ public class App {
 
         //Полиморфизм
         System.out.println("\nПолиморфизм и интерфейсы");
-        SearchEngine searchEngine = new SearchEngine(10);
+        SearchEngine searchEngine = new SearchEngine();
         searchEngine.add(bread);
         searchEngine.add(milk);
         searchEngine.add(eggs);
         searchEngine.add(cheese);
         searchEngine.add(sausage);
         Article article1 = new Article("Хлебная мудрость", "Лучше Хлеб с водою, чем пирог с бедою");
-        Article article2 = new Article("Сырная мудрость", "Бесплатный Сыр бывает только в мышеловке. И только дл второй мыши");
+        Article article2 = new Article("Сырная мудрость", "Бесплатный Сыр бывает только в мышеловке. И только для второй мыши");
         searchEngine.add(article1);
         searchEngine.add(article2);
         System.out.println("\nРезультаты поиска Хлеб:");
-        printSearchResult(searchEngine.search("Хлеб"));
+        System.out.println(searchEngine.search("Хлеб"));
         System.out.println("\nРезультаты поиска Сыр:");
-        printSearchResult(searchEngine.search("Сыр"));
+        System.out.println(searchEngine.search("Сыр"));
         System.out.println("\nРезультаты поиска л:");
-        printSearchResult(searchEngine.search("л"));
+        System.out.println(searchEngine.search("л"));
         //Новый метод поиска
         System.out.println("\nНовый метод поиска");
         try {
@@ -82,16 +94,6 @@ public class App {
             System.out.println(searchEngine.getTheBestSearchResult("jnbsvad").getStringRepresentation());
         } catch (BestResultNotFound e) {
             System.out.println("Не найдено подходящей статьи");
-        }
-    }
-
-    private static void printSearchResult(Searchable[] searchResult) {
-        for (Searchable x : searchResult) {
-            if (x != null) {
-                System.out.println(x.getStringRepresentation());
-            } else {
-                System.out.println("null");
-            }
         }
     }
 }

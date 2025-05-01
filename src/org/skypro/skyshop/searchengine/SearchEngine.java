@@ -3,22 +3,21 @@ package org.skypro.skyshop.searchengine;
 import org.skypro.skyshop.BestResultNotFound;
 import org.skypro.skyshop.Searchable;
 
-public class SearchEngine {
-    private Searchable[] searchlist;
-    private int id = 0;
+import java.util.ArrayList;
+import java.util.List;
 
-    public SearchEngine(int size) {
-        searchlist = new Searchable[size];
+public class SearchEngine {
+    private List<Searchable> searchlist;
+
+    public SearchEngine() {
+        searchlist = new ArrayList<>();
     }
 
-    public Searchable[] search(String target) {
-        Searchable[] searchResult = new Searchable[5];
-        int counter = 0;
+    public List<Searchable> search(String target) {
+        List<Searchable> searchResult = new ArrayList<>();
         for (Searchable x : searchlist) {
-            if (counter > 4) {
-                break;
-            } else if (x != null && x.getSearchTerm().contains(target)) {
-                searchResult[counter++] = x;
+            if (x != null && x.getSearchTerm().contains(target)) {
+                searchResult.add(x);
             }
         }
         return searchResult;
@@ -30,17 +29,14 @@ public class SearchEngine {
         }
         int maxCount = 0;
         int maxIndex = -1;
-        for (int i = 0; i < searchlist.length; i++) {
-            if (searchlist[i] == null) {
-                break;
-            }
+        for (int i = 0; i < searchlist.size(); i++) {
             int count = 0;
             int index = 0;
-            int indexOfSubstring = searchlist[i].getSearchTerm().indexOf(search, index);
+            int indexOfSubstring = searchlist.get(i).getSearchTerm().indexOf(search, index);
             while (indexOfSubstring != -1) {
                 count++;
                 index = indexOfSubstring + search.length();
-                indexOfSubstring = searchlist[i].getSearchTerm().indexOf(search, index);
+                indexOfSubstring = searchlist.get(i).getSearchTerm().indexOf(search, index);
             }
             if (count > maxCount) {
                 maxCount = count;
@@ -48,15 +44,15 @@ public class SearchEngine {
             }
         }
         if (maxIndex != -1) {
-            return searchlist[maxIndex];
+            return searchlist.get(maxIndex);
         } else {
             throw new BestResultNotFound("Для запроса \"" + search + "\" не нашлось подходящей статьи");
         }
     }
 
     public void add(Searchable searchObject) {
-        if (id < searchlist.length) {
-            searchlist[id++] = searchObject;
+        if (searchObject != null) {
+            searchlist.add(searchObject);
         }
     }
 }
