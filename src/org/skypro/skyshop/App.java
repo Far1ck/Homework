@@ -9,6 +9,7 @@ import org.skypro.skyshop.product.producttypes.SimpleProduct;
 import org.skypro.skyshop.searchengine.SearchEngine;
 
 import java.util.List;
+import java.util.SortedMap;
 
 
 public class App {
@@ -80,11 +81,11 @@ public class App {
         searchEngine.add(article1);
         searchEngine.add(article2);
         System.out.println("\nРезультаты поиска Хлеб:");
-        System.out.println(searchEngine.search("Хлеб"));
+        printSearchResult(searchEngine.search("Хлеб"));
         System.out.println("\nРезультаты поиска Сыр:");
-        System.out.println(searchEngine.search("Сыр"));
+        printSearchResult(searchEngine.search("Сыр"));
         System.out.println("\nРезультаты поиска л:");
-        System.out.println(searchEngine.search("л"));
+        printSearchResult(searchEngine.search("л"));
         //Новый метод поиска
         System.out.println("\nНовый метод поиска");
         try {
@@ -94,6 +95,12 @@ public class App {
             System.out.println(searchEngine.getTheBestSearchResult("jnbsvad").getStringRepresentation());
         } catch (BestResultNotFound e) {
             System.out.println("Не найдено подходящей статьи");
+        }
+    }
+
+    public static void printSearchResult(SortedMap<String, Searchable> searchResults) {
+        for (Searchable result : searchResults.values()) {
+            System.out.println(result.getStringRepresentation());
         }
     }
 }
