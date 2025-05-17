@@ -3,10 +3,7 @@ package org.skypro.skyshop.searchengine;
 import org.skypro.skyshop.BestResultNotFound;
 import org.skypro.skyshop.Searchable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 public class SearchEngine {
     private List<Searchable> searchlist;
@@ -15,10 +12,10 @@ public class SearchEngine {
         searchlist = new ArrayList<>();
     }
 
-    public SortedMap<String, Searchable> search(String target) {
-        SortedMap<String, Searchable> searchResult = new TreeMap<>();
+    public Map<String, Searchable> search(String target) {
+        Map<String, Searchable> searchResult = new TreeMap<>();
         for (Searchable x : searchlist) {
-            if (x != null && x.getSearchTerm().contains(target)) {
+            if (x.getSearchTerm().contains(target)) {
                 searchResult.put(x.getName(), x);
             }
         }

@@ -9,7 +9,7 @@ import org.skypro.skyshop.product.producttypes.SimpleProduct;
 import org.skypro.skyshop.searchengine.SearchEngine;
 
 import java.util.List;
-import java.util.SortedMap;
+import java.util.Map;
 
 
 public class App {
@@ -98,7 +98,7 @@ public class App {
         }
     }
 
-    public static void printSearchResult(SortedMap<String, Searchable> searchResults) {
+    public static void printSearchResult(Map<String, Searchable> searchResults) {
         for (Searchable result : searchResults.values()) {
             System.out.println(result.getStringRepresentation());
         }

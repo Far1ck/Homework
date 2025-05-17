@@ -5,10 +5,12 @@ import org.skypro.skyshop.product.Product;
 import java.util.*;
 
 public class ProductBasket {
-    private Map<String, ArrayList<Product>> products = new HashMap<>();
+    private Map<String, List<Product>> products = new HashMap<>();
 
     public void addProduct(Product product) {
-        if (product == null) return;
+        if (product == null) {
+            return;
+        }
         if (!products.containsKey(product.getName())) {
             products.put(product.getName(), new ArrayList<>());
         }
@@ -17,7 +19,7 @@ public class ProductBasket {
 
     public int basketCost() {
         int sum = 0;
-        for (ArrayList<Product> productList : products.values()) {
+        for (List<Product> productList : products.values()) {
             for (Product product : productList) {
                 sum += product.getPrice();
             }
@@ -28,13 +30,11 @@ public class ProductBasket {
     public void contentsOfTheBasket() {
         boolean basketIsEmpty = true;
         int countOfSpecialProducts = 0;
-        for (ArrayList<Product> productList : products.values()) {
+        for (List<Product> productList : products.values()) {
             for (Product product : productList) {
-                if (product != null) {
-                    System.out.println(product);
-                    countOfSpecialProducts = product.isSpecial() ? countOfSpecialProducts + 1 : countOfSpecialProducts;
-                    basketIsEmpty = false;
-                }
+                System.out.println(product);
+                countOfSpecialProducts = product.isSpecial() ? countOfSpecialProducts + 1 : countOfSpecialProducts;
+                basketIsEmpty = false;
             }
         }
         if (basketIsEmpty) {
@@ -55,7 +55,7 @@ public class ProductBasket {
 
     public List<Product> removeByName(String name) {
         List<Product> result = new LinkedList<>();
-        for (Map.Entry<String, ArrayList<Product>> productList : products.entrySet()) {
+        for (Map.Entry<String, List<Product>> productList : products.entrySet()) {
             if (productList.getKey().equals(name)) {
                 result.addAll(productList.getValue());
             }
