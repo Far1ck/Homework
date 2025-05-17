@@ -9,7 +9,6 @@ import org.skypro.skyshop.product.producttypes.SimpleProduct;
 import org.skypro.skyshop.searchengine.SearchEngine;
 
 import java.util.List;
-import java.util.Map;
 
 
 public class App {

@@ -13,12 +13,9 @@ public class SearchEngine {
     }
 
     public Set<Searchable> search(String target) {
-        Set<Searchable> searchResult = new TreeSet<>(new Comparator<Searchable>() {
-            @Override
-            public int compare(Searchable o1, Searchable o2) {
-                int result = o2.getName().length() - o1.getName().length();
-                return result != 0 ? result : o1.getName().compareTo(o2.getName());
-            }
+        Set<Searchable> searchResult = new TreeSet<>((o1, o2) -> {
+            int result = o2.getName().length() - o1.getName().length();
+            return result != 0 ? result : o1.getName().compareTo(o2.getName());
         });
         for (Searchable x : searchlist) {
             if (x.getSearchTerm().contains(target)) {

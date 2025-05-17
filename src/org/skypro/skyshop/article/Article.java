@@ -34,7 +34,7 @@ public class Article implements Searchable {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || this.getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Article article = (Article) o;
         return Objects.equals(name, article.name);
     }
