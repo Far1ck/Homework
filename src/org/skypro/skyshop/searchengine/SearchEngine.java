@@ -6,17 +6,20 @@ import org.skypro.skyshop.Searchable;
 import java.util.*;
 
 public class SearchEngine {
-    private List<Searchable> searchlist;
+    private Set<Searchable> searchlist;
 
     public SearchEngine() {
-        searchlist = new ArrayList<>();
+        searchlist = new HashSet<>();
     }
 
-    public Map<String, Searchable> search(String target) {
-        Map<String, Searchable> searchResult = new TreeMap<>();
+    public Set<Searchable> search(String target) {
+        Set<Searchable> searchResult = new TreeSet<>((o1, o2) -> {
+            int result = o2.getName().length() - o1.getName().length();
+            return result != 0 ? result : o1.getName().compareTo(o2.getName());
+        });
         for (Searchable x : searchlist) {
             if (x.getSearchTerm().contains(target)) {
-                searchResult.put(x.getName(), x);
+                searchResult.add(x);
             }
         }
         return searchResult;
@@ -27,23 +30,23 @@ public class SearchEngine {
             throw new IllegalArgumentException("В строке поиска пусто");
         }
         int maxCount = 0;
-        int maxIndex = -1;
-        for (int i = 0; i < searchlist.size(); i++) {
+        Searchable result = null;
+        for (Searchable searchable : searchlist) {
             int count = 0;
             int index = 0;
-            int indexOfSubstring = searchlist.get(i).getSearchTerm().indexOf(search, index);
+            int indexOfSubstring = searchable.getSearchTerm().indexOf(search, index);
             while (indexOfSubstring != -1) {
                 count++;
                 index = indexOfSubstring + search.length();
-                indexOfSubstring = searchlist.get(i).getSearchTerm().indexOf(search, index);
+                indexOfSubstring = searchable.getSearchTerm().indexOf(search, index);
             }
             if (count > maxCount) {
                 maxCount = count;
-                maxIndex = i;
+                result = searchable;
             }
         }
-        if (maxIndex != -1) {
-            return searchlist.get(maxIndex);
+        if (result != null) {
+            return result;
         } else {
             throw new BestResultNotFound("Для запроса \"" + search + "\" не нашлось подходящей статьи");
         }
