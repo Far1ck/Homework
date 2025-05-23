@@ -4,6 +4,7 @@ import org.skypro.skyshop.BestResultNotFound;
 import org.skypro.skyshop.Searchable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SearchEngine {
     private Set<Searchable> searchlist;
@@ -13,16 +14,12 @@ public class SearchEngine {
     }
 
     public Set<Searchable> search(String target) {
-        Set<Searchable> searchResult = new TreeSet<>((o1, o2) -> {
-            int result = o2.getName().length() - o1.getName().length();
-            return result != 0 ? result : o1.getName().compareTo(o2.getName());
-        });
-        for (Searchable x : searchlist) {
-            if (x.getSearchTerm().contains(target)) {
-                searchResult.add(x);
-            }
-        }
-        return searchResult;
+        return searchlist.stream()
+                .filter(searchable -> searchable.getSearchTerm().contains(target))
+                .collect(Collectors.toCollection(() -> new TreeSet<>((o1, o2) -> {
+                    int result = o2.getName().length() - o1.getName().length();
+                    return result != 0 ? result : o1.getName().compareTo(o2.getName());
+                })));
     }
 
     public Searchable getTheBestSearchResult(String search) throws BestResultNotFound {
