@@ -9,7 +9,6 @@ import org.skypro.skyshop.product.producttypes.SimpleProduct;
 import org.skypro.skyshop.searchengine.SearchEngine;
 
 import java.util.List;
-import java.util.Map;
 
 
 public class App {
@@ -30,6 +29,7 @@ public class App {
         Product eggs = new DiscountedProduct("Яйца", 120, 20);
         Product cheese = new DiscountedProduct("Сыр", 152, 30);
         Product sausage = new SimpleProduct("Колбаса", 280);
+        Product cottageCheese = new SimpleProduct("Творог", 120);
         //Создаем корзину
         ProductBasket productBasket = new ProductBasket();
         //Добавляем продукты в корзину
@@ -76,16 +76,19 @@ public class App {
         searchEngine.add(eggs);
         searchEngine.add(cheese);
         searchEngine.add(sausage);
+        searchEngine.add(cottageCheese);
         Article article1 = new Article("Хлебная мудрость", "Лучше Хлеб с водою, чем пирог с бедою");
         Article article2 = new Article("Сырная мудрость", "Бесплатный Сыр бывает только в мышеловке. И только для второй мыши");
         searchEngine.add(article1);
         searchEngine.add(article2);
         System.out.println("\nРезультаты поиска Хлеб:");
-        printSearchResult(searchEngine.search("Хлеб"));
+        System.out.println(searchEngine.search("Хлеб"));
         System.out.println("\nРезультаты поиска Сыр:");
-        printSearchResult(searchEngine.search("Сыр"));
+        System.out.println(searchEngine.search("Сыр"));
         System.out.println("\nРезультаты поиска л:");
-        printSearchResult(searchEngine.search("л"));
+        System.out.println(searchEngine.search("л"));
+        System.out.println("\nРезультаты поиска о:");
+        System.out.println(searchEngine.search("о"));
         //Новый метод поиска
         System.out.println("\nНовый метод поиска");
         try {
@@ -95,12 +98,6 @@ public class App {
             System.out.println(searchEngine.getTheBestSearchResult("jnbsvad").getStringRepresentation());
         } catch (BestResultNotFound e) {
             System.out.println("Не найдено подходящей статьи");
-        }
-    }
-
-    public static void printSearchResult(Map<String, Searchable> searchResults) {
-        for (Searchable result : searchResults.values()) {
-            System.out.println(result.getStringRepresentation());
         }
     }
 }
