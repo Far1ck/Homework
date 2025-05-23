@@ -3,6 +3,7 @@ package org.skypro.skyshop.basket;
 import org.skypro.skyshop.product.Product;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProductBasket {
     private Map<String, List<Product>> products = new HashMap<>();
@@ -18,31 +19,27 @@ public class ProductBasket {
     }
 
     public int basketCost() {
-        int sum = 0;
-        for (List<Product> productList : products.values()) {
-            for (Product product : productList) {
-                sum += product.getPrice();
-            }
-        }
-        return sum;
+        return products.values().stream().flatMap(Collection::stream)
+                .mapToInt(Product::getPrice)
+                .sum();
     }
 
     public void contentsOfTheBasket() {
-        boolean basketIsEmpty = true;
-        int countOfSpecialProducts = 0;
-        for (List<Product> productList : products.values()) {
-            for (Product product : productList) {
-                System.out.println(product);
-                countOfSpecialProducts = product.isSpecial() ? countOfSpecialProducts + 1 : countOfSpecialProducts;
-                basketIsEmpty = false;
-            }
-        }
-        if (basketIsEmpty) {
+        products.values().stream().flatMap(Collection::stream)
+                .forEach(System.out::println);
+        int countOfSpecialProducts = getSpecialCount();
+        if (products.isEmpty()) {
             System.out.println("В корзине пусто");
         } else {
             System.out.println("Итого: " + basketCost());
         }
         System.out.println("Специальных товаров: " + countOfSpecialProducts);
+    }
+
+    private int getSpecialCount() {
+        return (int)products.values().stream().flatMap(Collection::stream)
+                .filter(Product::isSpecial)
+                .count();
     }
 
     public boolean productExists(String productName) {
@@ -54,12 +51,11 @@ public class ProductBasket {
     }
 
     public List<Product> removeByName(String name) {
-        List<Product> result = new LinkedList<>();
-        for (Map.Entry<String, List<Product>> productList : products.entrySet()) {
-            if (productList.getKey().equals(name)) {
-                result.addAll(productList.getValue());
-            }
-        }
+        List<Product> result = products.entrySet().stream()
+                .filter(productEntry -> productEntry.getKey().equals(name))
+                .map(Map.Entry::getValue)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toCollection(LinkedList::new));
         products.remove(name);
         return result;
     }
